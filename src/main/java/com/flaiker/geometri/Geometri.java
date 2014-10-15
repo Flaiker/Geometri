@@ -1,5 +1,6 @@
 package com.flaiker.geometri;
 
+import com.flaiker.geometri.blocks.ModBlocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -16,7 +17,7 @@ public class Geometri {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-
+        ModBlocks.init();
     }
 
     @Mod.EventHandler
