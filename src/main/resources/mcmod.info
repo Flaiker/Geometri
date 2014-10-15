@@ -1,0 +1,16 @@
+[
+{
+  "modid": "geometri",
+  "name": "Geometri",
+  "description": "Geometrics in Minecraft",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "geometri.flaiker.com",
+  "updateUrl": "",
+  "authorList": ["Flaiker"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
