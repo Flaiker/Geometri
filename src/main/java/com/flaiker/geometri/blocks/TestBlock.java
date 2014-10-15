@@ -16,6 +16,7 @@ public class TestBlock extends Block {
         super(Material.rock);
         setCreativeTab(CreativeTabs.tabBlock);
         setBlockName(Geometri.MODID + "_" + NAME);
+        setBlockTextureName(Geometri.MODID + ":" + NAME);
         GameRegistry.registerBlock(this, NAME);
     }
 }
