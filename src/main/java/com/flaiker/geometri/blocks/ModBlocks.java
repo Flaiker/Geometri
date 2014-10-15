@@ -7,8 +7,10 @@ import net.minecraft.block.Block;
  */
 public final class ModBlocks {
     public static Block testBlock;
+    public static Block testEntityBlock;
 
     public static void init() {
         testBlock = new TestBlock();
+        testEntityBlock = new TestEntityBlock();
     }
 }
