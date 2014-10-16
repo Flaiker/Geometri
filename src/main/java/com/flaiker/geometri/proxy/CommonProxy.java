@@ -1,5 +1,6 @@
 package com.flaiker.geometri.proxy;
 
+import com.flaiker.geometri.tileentities.TileEntityMath;
 import com.flaiker.geometri.tileentities.TileEntityTestEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -9,5 +10,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class CommonProxy {
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityTestEntity.class, TileEntityTestEntity.NAME);
+        GameRegistry.registerTileEntity(TileEntityMath.class, TileEntityMath.NAME);
     }
 }

@@ -8,9 +8,11 @@ import net.minecraft.block.Block;
 public final class ModBlocks {
     public static Block testBlock;
     public static Block testEntityBlock;
+    public static Block mathEntityBlock;
 
     public static void init() {
         testBlock = new TestBlock();
         testEntityBlock = new TestEntityBlock();
+        mathEntityBlock = new MathEntityBlock();
     }
 }
