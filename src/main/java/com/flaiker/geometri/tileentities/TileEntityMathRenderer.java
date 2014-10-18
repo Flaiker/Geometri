@@ -30,9 +30,7 @@ public class TileEntityMathRenderer extends TileEntitySpecialRenderer {
 
         GL11.glPushMatrix();
 
-        GL11.glTranslatef((float) x, (float) y + 1, (float) z + 1);
-        GL11.glScalef(1.0F, -1.0F, -1.0F);
-        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        GL11.glTranslatef((float) x, (float) y, (float) z);
 
         model.render();
 

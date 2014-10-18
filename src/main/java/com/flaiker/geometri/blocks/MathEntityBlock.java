@@ -48,9 +48,9 @@ public class MathEntityBlock extends BlockContainer {
     public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
         super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
         TileEntity te = world.getTileEntity(tileX, tileY, tileZ);
-        if (te instanceof TileEntityMath) {
-            ((TileEntityMath) world.getTileEntity(x, y, z)).onNeighborChange();
-        }
+        //if (te instanceof TileEntityMath) {
+            ((TileEntityMath) world.getTileEntity(x, y, z)).onNeighborChange(true);
+        //}
     }
 }
 

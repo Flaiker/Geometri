@@ -12,7 +12,7 @@ import java.util.Map;
  * Created by Flaiker on 15.10.2014.
  */
 public class MathModel extends ModelBase {
-
+    public static final int PIXEL_COUNT = 16;
     private ModelRenderer shape1;
     private static Map<Integer, ModelRenderer> recycledCoordinates = new HashMap<Integer, ModelRenderer>();
 
@@ -22,7 +22,7 @@ public class MathModel extends ModelBase {
 
 
     public void render() {
-        shape1.render(0.0625F);
+        shape1.render(1f/PIXEL_COUNT);
     }
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
@@ -40,7 +40,7 @@ public class MathModel extends ModelBase {
         } else {
             shape1 = new ModelRenderer(this, 0, 0);
             for (CoordinatePair pair : coordinatePairs) {
-                shape1.addBox(pair.x, 0F, pair.y, 1, 8, 1);
+                shape1.addBox(pair.x, 0F, pair.y, 1, PIXEL_COUNT/2, 1);
             }
             recycledCoordinates.put(coordinatePairs.hashCode(), shape1);
         }

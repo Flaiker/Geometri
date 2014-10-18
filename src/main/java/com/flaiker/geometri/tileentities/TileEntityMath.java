@@ -1,5 +1,6 @@
 package com.flaiker.geometri.tileentities;
 
+import com.flaiker.geometri.helper.GeometryHelper;
 import com.flaiker.geometri.models.MathModel;
 import net.minecraft.tileentity.TileEntity;
 
@@ -17,7 +18,6 @@ public class TileEntityMath extends TileEntity {
     private static List<MathModel.CoordinatePair> COORDS_LIST = new ArrayList<MathModel.CoordinatePair>();
 
     public TileEntityMath() {
-        System.out.println("New instance");
         coordinatePairs = new ArrayList<MathModel.CoordinatePair>();
         neighbors = new ArrayList<TileEntityMath>();
         if (COORDS_LIST.size() == 0) {
@@ -35,29 +35,49 @@ public class TileEntityMath extends TileEntity {
         super.updateEntity();
     }
 
-    private void setInitialCoordinates() {
+    /**
+     * Sets the coordinatePairs-list so that a cube is rendered, meaning no special alignment
+     */
+    public void setInitialCoordinates() {
         coordinatePairs.clear();
-        for (int i = -8; i <= 7; i++) {
-            coordinatePairs.add(new MathModel.CoordinatePair(i, 0));
+        int centerLeft = MathModel.PIXEL_COUNT / 2 - Math.round(MathModel.PIXEL_COUNT / 4f);
+        int centerRight = MathModel.PIXEL_COUNT / 2 + Math.round(MathModel.PIXEL_COUNT / 4f);
+        for (int i = centerLeft; i <= centerRight; i++) {
+            for (int ii = centerLeft; ii <= centerRight; ii++) {
+                coordinatePairs.add(new MathModel.CoordinatePair(i, ii));
+            }
         }
     }
 
-    public void onNeighborChange() {
+    /**
+     * Searches for Mathblocks/entities around and fills the neighbors-list accordingly
+     *
+     * @param updateAlignment force to recalculate alignment
+     */
+    public void onNeighborChange(boolean updateAlignment) {
         neighbors.clear();
 
-        System.out.println("I'm at " + xCoord + "|" + zCoord);
         TileEntity te;
-
         for (MathModel.CoordinatePair coordinatePair : COORDS_LIST) {
             te = worldObj.getTileEntity(xCoord + coordinatePair.x, yCoord, zCoord + coordinatePair.y);
             if (te instanceof TileEntityMath) {
-                System.out.println(coordinatePair.x + "|" + coordinatePair.y + ": yes");
+                //System.out.println(coordinatePair.x + "|" + coordinatePair.y + ": yes");
                 neighbors.add((TileEntityMath) te);
-            } else System.out.println(coordinatePair.x + "|" + coordinatePair.y + ": no");
+            } //else System.out.println(coordinatePair.x + "|" + coordinatePair.y + ": no");
         }
+
+        if (updateAlignment) GeometryHelper.alignAllTheThingsCircleLike(this);
+    }
+
+    public List<TileEntityMath> getNeighbors() {
+        return neighbors;
     }
 
     public List<MathModel.CoordinatePair> getCoordinatePairs() {
         return coordinatePairs;
+    }
+
+    public void setCoordinatePairs(List<MathModel.CoordinatePair> coordinatePairs) {
+        this.coordinatePairs = coordinatePairs;
     }
 }
