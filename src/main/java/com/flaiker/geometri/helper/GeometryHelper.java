@@ -13,7 +13,18 @@ import java.util.List;
  * Created by Flaiker on 16.10.2014.
  */
 public class GeometryHelper {
-    public static void alignAllTheThingsCircleLike(TileEntityMath tileEntityMath) {
+    public static void alignStuff(TileEntityMath tileEntityMath, AlignmentMethod method) {
+        switch (method) {
+            case CIRCLE:
+                alignAllTheThingsCircleLike(tileEntityMath);
+                break;
+            case OVAL:
+                //alignAllTheThingsOvalLike(tileEntityMath);
+                break;
+        }
+    }
+
+    private static void alignAllTheThingsCircleLike(TileEntityMath tileEntityMath) {
         List<TileEntityMath> entityList = new ArrayList<TileEntityMath>();
         getChilds(tileEntityMath, entityList);
 
@@ -35,22 +46,74 @@ public class GeometryHelper {
                     distance3 = getDistanceBetweenCoordinates(x * p + p, y * p, centerX, centerY);
                     distance4 = getDistanceBetweenCoordinates(x * p, y * p + p, centerX, centerY);
 
-                    if (((radius > distance1 && radius < distance2) || (radius < distance1 && radius > distance2)) ||
-                        ((radius > distance3 && radius < distance4) || (radius < distance3 && radius > distance4))) {
-                        List<CoordinatePair> newCoordinatesList = new ArrayList<CoordinatePair>();
+                    /*if (((radius > distance1 && radius < distance2) || (radius < distance1 && radius > distance2)) ||
+                        ((radius > distance3 && radius < distance4) || (radius < distance3 && radius > distance4))) {*/
+                    List<CoordinatePair> newCoordinatesList = new ArrayList<CoordinatePair>();
 
-                        for (int px = 0; px < p; px++) {
-                            for (int py = 0; py < p; py++) {
-                                double dstBtwPixelAndCenter = (getDistanceBetweenCoordinates(x * p + px, y * p + py, centerX, centerY));
-                                if (dstBtwPixelAndCenter >= radius && dstBtwPixelAndCenter <= radius + 1) {
-                                    newCoordinatesList.add(new CoordinatePair(px, py));
-                                }
+                    for (int px = 0; px < p; px++) {
+                        for (int py = 0; py < p; py++) {
+                            double angle;
+                            try{
+                             angle = Math.atan((double) (y * p + py) / (double) (x * p + px)) * (180 / Math.PI);
+                            } catch (Exception e) {
+                                angle = 0;
                             }
+
+
+                            /*double pixelRadius = (centerX * centerY) / (Math.sqrt(Math.pow(centerX, 2) * Math.pow(Math.sin(angle), 2) +
+                                                                                  Math.pow(centerY, 2) * Math.pow(Math.cos(angle), 2)));*/
+
+                            //double dstBtwPixelAndCenter = (getDistanceBetweenCoordinates(x * p + px, y * p + py, centerX, centerY));
+                            //if (dstBtwPixelAndCenter >= pixelRadius - 1 && dstBtwPixelAndCenter <= pixelRadius + 1) {
+                            double condition = (Math.pow((x*p+px-centerX)/centerX,2)+Math.pow((y*p+py-centerY)/centerY,2));
+                            if (condition>0.8f && condition <= 1) {
+                                newCoordinatesList.add(new CoordinatePair(px, py));
+                            }
+
+                            //}
                         }
+                    }
+                    if (newCoordinatesList.size() > 0) {
                         te.setCoordinatePairs(newCoordinatesList);
                     } else te.setInitialCoordinates();
+
+                    //} else te.setInitialCoordinates();
                 }
             }
+        }
+    }
+
+    private static void alignAllTheThingsOvalLike(TileEntityMath tileEntityMath) {
+        List<TileEntityMath> entityList = new ArrayList<TileEntityMath>();
+        getChilds(tileEntityMath, entityList);
+        clearCoordinates(entityList);
+
+        TileEntityMath[][] coordinateArray = getCoordinateArray(entityList);
+
+        int p = MathModel.PIXEL_COUNT;
+
+        float angle = 0;
+        float centerX = coordinateArray.length / 2.0f * p - 0.5f;
+        float centerY = coordinateArray[0].length / 2.0f * p - 0.5f;
+        float step = 0.5f;
+
+        while (angle < 360) {
+            float x = (float) (centerX + (centerX) * Math.cos(angle));
+            float y = (float) (centerY - (centerY) * Math.sin(angle));
+
+            TileEntityMath entity = coordinateArray[(int) (x / p)][(int) (y / p)];
+            if (entity != null) {
+                entity.addCoordinate(Math.round(x) - ((int) (x / p) * p), Math.round(y) - ((int) (y / p) * p));
+            }
+            angle += step;
+
+            //System.out.println(";" + (Math.round(x)-((int)(x/p)* p)) + "|" + (Math.round(x)-((int)(y/p)* p)));
+        }
+    }
+
+    private static void clearCoordinates(List<TileEntityMath> entityList) {
+        for (TileEntityMath entity : entityList) {
+            entity.clearCoordinates();
         }
     }
 
@@ -100,5 +163,9 @@ public class GeometryHelper {
 
     private static double getDistanceBetweenCoordinates(float xPos, float yPos, float xPos2, float yPos2) {
         return Math.sqrt(Math.pow((xPos2 - xPos), 2) + Math.pow((yPos2 - yPos), 2));
+    }
+
+    public static enum AlignmentMethod {
+        CIRCLE, OVAL
     }
 }

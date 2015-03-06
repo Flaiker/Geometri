@@ -66,7 +66,7 @@ public class TileEntityMath extends TileEntity {
             } //else System.out.println(coordinatePair.x + "|" + coordinatePair.y + ": no");
         }
 
-        if (updateAlignment) GeometryHelper.alignAllTheThingsCircleLike(this);
+        if (updateAlignment) GeometryHelper.alignStuff(this, GeometryHelper.AlignmentMethod.CIRCLE);
     }
 
     public List<TileEntityMath> getNeighbors() {
@@ -79,5 +79,13 @@ public class TileEntityMath extends TileEntity {
 
     public void setCoordinatePairs(List<MathModel.CoordinatePair> coordinatePairs) {
         this.coordinatePairs = coordinatePairs;
+    }
+
+    public void clearCoordinates() {
+        coordinatePairs.clear();
+    }
+
+    public void addCoordinate(int x, int y) {
+        coordinatePairs.add(new MathModel.CoordinatePair(x, y));
     }
 }
