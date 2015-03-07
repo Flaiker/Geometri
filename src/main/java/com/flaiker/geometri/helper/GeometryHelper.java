@@ -1,3 +1,8 @@
+/******************************************************************************
+ * Copyright (c) 2015 Fabian Lupa                                             *
+ * This software is licensed under the MIT License (MIT).                     *
+ ******************************************************************************/
+
 package com.flaiker.geometri.helper;
 
 import com.flaiker.geometri.models.MathModel;
